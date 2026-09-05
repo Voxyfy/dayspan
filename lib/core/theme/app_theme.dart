@@ -15,7 +15,11 @@ import 'app_metrics.dart';
 abstract final class AppTheme {
   static const _tabular = [FontFeature.tabularFigures()];
 
-  static ThemeData dark() {
+  /// [fontFamily] yalnızca çekim aracı için: test motorunda aile
+  /// belirtmeyen metin yer tutucuya düşer, üründe null kalır (sistem).
+  /// Bileşen temalarındaki (düğme, çubuk, snackbar) stiller DefaultTextStyle
+  /// zincirinden aile almaz; bu yüzden aile oralara elle işlenir.
+  static ThemeData dark({String? fontFamily}) {
     const scheme = ColorScheme.dark(
       primary: AppColors.accent,
       onPrimary: AppColors.onAccent,
@@ -28,23 +32,25 @@ abstract final class AppTheme {
     );
 
     return ThemeData(
+      fontFamily: fontFamily,
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: scheme,
       scaffoldBackgroundColor: AppColors.background,
       splashFactory: InkSparkle.splashFactory,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: AppColors.background,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
+          fontFamily: fontFamily,
           color: AppColors.textPrimary,
           fontSize: 17,
           fontWeight: FontWeight.w600,
         ),
-        iconTheme: IconThemeData(color: AppColors.textPrimary),
+        iconTheme: const IconThemeData(color: AppColors.textPrimary),
       ),
       textTheme: const TextTheme(
         headlineLarge: TextStyle(
@@ -97,7 +103,11 @@ abstract final class AppTheme {
           foregroundColor: AppColors.onAccent,
           minimumSize: const Size.fromHeight(54),
           elevation: 0,
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle: TextStyle(
+            fontFamily: fontFamily,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Radii.md),
           ),
@@ -112,7 +122,10 @@ abstract final class AppTheme {
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.surfaceMuted,
-        contentTextStyle: const TextStyle(color: AppColors.textPrimary),
+        contentTextStyle: TextStyle(
+          fontFamily: fontFamily,
+          color: AppColors.textPrimary,
+        ),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Radii.sm),

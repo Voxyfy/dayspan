@@ -41,6 +41,15 @@ class Heatmap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context).toString();
+    // Etiket stili temadan türer ki yazı tipi ailesi uygulamanın geri
+    // kalanıyla aynı olsun; painter içinde kurulan çıplak TextStyle motorun
+    // varsayılanına düşüyordu.
+    final labelStyle =
+        (Theme.of(context).textTheme.labelSmall ?? const TextStyle()).copyWith(
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textTertiary,
+        );
     final width = labelWidth + weeks * (cell + gap);
     const height = monthRow + 7 * (cell + gap);
     return Semantics(
@@ -57,6 +66,7 @@ class Heatmap extends StatelessWidget {
             weeks: weeks,
             dayLetters: dayLetters,
             monthFormat: DateFormat.MMM(locale),
+            labelStyle: labelStyle,
           ),
         ),
       ),
@@ -72,6 +82,7 @@ class _HeatmapPainter extends CustomPainter {
     required this.weeks,
     required this.dayLetters,
     required this.monthFormat,
+    required this.labelStyle,
   });
 
   final double Function(DateTime) levelOn;
@@ -80,6 +91,7 @@ class _HeatmapPainter extends CustomPainter {
   final int weeks;
   final String dayLetters;
   final DateFormat monthFormat;
+  final TextStyle labelStyle;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -94,11 +106,6 @@ class _HeatmapPainter extends CustomPainter {
       ..color = AppColors.textSecondary
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
-    final labelStyle = const TextStyle(
-      fontSize: 10,
-      fontWeight: FontWeight.w600,
-      color: AppColors.textTertiary,
-    );
 
     // Gün harfleri: Pzt, Çar, Cum. Hepsini yazmak sütunu sıkıştırıyordu.
     final letters = dayLetters.characters.toList();

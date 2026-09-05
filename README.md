@@ -32,7 +32,7 @@ open so you can verify that yourself.
 [Why](#why) · [Features](#features) · [Design principles](#design-principles) ·
 [Stack](#stack) · [Getting started](#getting-started) ·
 [Project structure](#project-structure) · [Localization](#localization) ·
-[Tests](#tests) · [Privacy](#privacy) · [Release](#release) ·
+[Tests](#tests) · [Privacy](#privacy) · [Screenshots](#screenshots) · [Release](#release) ·
 [Contributing](#contributing) · [Third-party assets](#third-party-assets) ·
 [License](#license)
 
@@ -175,8 +175,10 @@ ios/DayspanWatch/              # Apple Watch app (SwiftUI)
 ios/Runner/WatchBridge.swift   # WatchConnectivity bridge
 assets/icon/                   # App icon source (SVG) and rendered PNGs
 assets/illustrations/          # unDraw SVGs, recoloured to monochrome
-tool/                          # Illustration palette script
-test/                          # Unit and widget tests
+tool/                          # Illustration palette and screenshot flattening scripts
+test/                          # Unit and widget tests (+ screenshot tool)
+test/fonts/                    # Inter, used only by the screenshot tool
+screenshots/                   # App Store frames by size class
 docs/                          # GitHub Pages: landing, support, privacy
 ```
 
@@ -225,6 +227,7 @@ Database tests use in-memory SQLite; no device or simulator is needed.
 | `onboarding_test.dart` | First-launch flow and routing |
 | `locale_test.dart` | Language choice persists and survives reset |
 | `empty_state_test.dart` | Illustrations load and render on the dark ground |
+| `screenshot_capture_test.dart` | Not a test, the **screenshot tool** (6 frames × 3 sizes). Skipped in a normal run. |
 
 Two pitfalls for widget tests here: do not await a Drift stream's first value
 under the fake clock (`watch().first` never resolves; use `get()`), and give
@@ -238,12 +241,43 @@ advertising SDK in the dependency list, and you can confirm that in
 stored. The full policy is at
 [voxyfy.github.io/dayspan/privacy.html](https://voxyfy.github.io/dayspan/privacy.html).
 
+## Screenshots
+
+Store screenshots are not taken by hand; they are rendered from the real
+widget tree:
+
+```bash
+DAYSPAN_SHOTS=1 flutter test test/screenshot_capture_test.dart --tags screenshots
+python3 tool/flatten_screenshots.py
+```
+
+The second step is mandatory: `RepaintBoundary.toImage` always produces RGBA
+and App Store Connect rejects screenshots with an alpha channel, reporting it
+as a dimension error.
+
+The app uses the system font, which the test engine cannot load, so the tool
+loads Inter (`test/fonts/`, OFL) under the family name Material falls back to
+in tests. Inter is used only for screenshots and is not bundled in the app.
+Text styles that live in component themes (buttons, snackbar) do not inherit
+the family, so `AppTheme.dark(fontFamily:)` writes it into them explicitly.
+
+| Folder | Pixels | App Store slot |
+|---|---|---|
+| `screenshots/ios-6.9/` | 1320 × 2868 | 6.9", the only required iPhone slot |
+| `screenshots/ios-6.7/` | 1290 × 2796 | 6.7" |
+| `screenshots/ios-6.5/` | 1242 × 2688 | 6.5" |
+
+Six frames per size: Today, Habits, habit page with heatmap, task editor,
+onboarding, Settings. The data is seeded through the real database API, not
+painted on.
+
 ## Release
 
 | | |
 |---|---|
 | Bundle ID | `com.batuhanhaymana.dayspan` |
 | Display name | Dayspan |
+| Devices | iPhone only (no iPad build), Apple Watch companion |
 | Minimum iOS | 16.0 (widget 17.0, alarms 26.0), watchOS 10.0 |
 | Support URL | https://voxyfy.github.io/dayspan/support.html |
 | Privacy URL | https://voxyfy.github.io/dayspan/privacy.html |

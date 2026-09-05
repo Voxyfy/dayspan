@@ -24,8 +24,18 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAlarmKitUsageDescription</key>
+	<string>Dayspan rings an alarm for the tasks and habits you mark as must-not-miss, even in silent mode or Focus.</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Dayspan shows today's events from your calendar next to your tasks and habits. Nothing is uploaded; your calendar stays on this device.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Dayspan shows today's events from your calendar next to your tasks and habits.</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>Dayspan can add the blocks you plan to your calendar.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -53,30 +63,15 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>NSAlarmKitUsageDescription</key>
-	<string>Dayspan rings an alarm for the tasks and habits you mark as must-not-miss, even in silent mode or Focus.</string>
-	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>Dayspan shows today's events from your calendar next to your tasks and habits. Nothing is uploaded; your calendar stays on this device.</string>
-	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-	<string>Dayspan can add the blocks you plan to your calendar.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>Dayspan shows today's events from your calendar next to your tasks and habits.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
 </dict>
 </plist>

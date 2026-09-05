@@ -31,7 +31,7 @@ kendin doğrulayabilirsin.
 
 [Neden](#neden) · [Özellikler](#özellikler) · [Tasarım ilkeleri](#tasarım-ilkeleri) ·
 [Teknoloji](#teknoloji) · [Kurulum](#kurulum) · [Proje yapısı](#proje-yapısı) ·
-[Yerelleştirme](#yerelleştirme) · [Testler](#testler) · [Gizlilik](#gizlilik) ·
+[Yerelleştirme](#yerelleştirme) · [Testler](#testler) · [Gizlilik](#gizlilik) · [Ekran görüntüleri](#ekran-görüntüleri) ·
 [Yayın](#yayın) · [Katkı](#katkı) · [Üçüncü taraf varlıklar](#üçüncü-taraf-varlıklar) ·
 [Lisans](#lisans)
 
@@ -173,8 +173,10 @@ ios/DayspanWatch/              # Apple Watch uygulaması (SwiftUI)
 ios/Runner/WatchBridge.swift   # WatchConnectivity köprüsü
 assets/icon/                   # Uygulama ikonu kaynağı (SVG) ve PNG'ler
 assets/illustrations/          # unDraw SVG'leri, tek renge çekilmiş
-tool/                          # Çizim paleti betiği
-test/                          # Birim ve widget testleri
+tool/                          # Çizim paleti ve ekran görüntüsü düzleştirme betikleri
+test/                          # Birim ve widget testleri (+ çekim aracı)
+test/fonts/                    # Inter, yalnızca çekim aracı kullanır
+screenshots/                   # App Store kareleri, boyut sınıfına göre
 docs/                          # GitHub Pages: tanıtım, destek, gizlilik
 ```
 
@@ -223,6 +225,7 @@ Veritabanı testleri bellek içi SQLite kullanır; cihaz ya da simülatör gerek
 | `onboarding_test.dart` | İlk açılış akışı ve yönlendirme |
 | `locale_test.dart` | Dil seçimi kalıcı, sıfırlamadan sonra korunur |
 | `empty_state_test.dart` | Çizimler yüklenir ve koyu zeminde çizilir |
+| `screenshot_capture_test.dart` | Test değil, **çekim aracı** (6 kare × 3 boyut). Olağan koşuda atlanır. |
 
 Widget testlerinde iki tuzak: sahte saat altında drift akışının ilk değerini
 bekleme (`watch().first` hiç çözülmez; `get()` kullan) ve her `MaterialApp`'e
@@ -235,12 +238,42 @@ raporlama ya da reklam SDK'sı yoktur; `pubspec.yaml`'dan doğrulayabilirsin.
 Takvim salt okunur izinle okunur ve asla saklanmaz. Politikanın tamamı:
 [voxyfy.github.io/dayspan/privacy.html](https://voxyfy.github.io/dayspan/privacy.html).
 
+## Ekran görüntüleri
+
+Mağaza kareleri elle çekilmiyor; gerçek widget ağacından üretiliyor:
+
+```bash
+DAYSPAN_SHOTS=1 flutter test test/screenshot_capture_test.dart --tags screenshots
+python3 tool/flatten_screenshots.py
+```
+
+İkinci adım zorunlu: `RepaintBoundary.toImage` her zaman RGBA üretir ve App
+Store Connect alfa kanallı görseli reddeder, üstelik bunu ölçü hatası gibi
+bildirir.
+
+Uygulama sistem yazı tipini kullanır, test motoru onu yükleyemez; araç bu
+yüzden Inter'i (`test/fonts/`, OFL) Material'ın testte düştüğü aile adıyla
+yükler. Inter yalnızca çekimde var, uygulamaya paketlenmez. Bileşen
+temalarındaki stiller (düğme, snackbar) aileyi zincirden almaz;
+`AppTheme.dark(fontFamily:)` oralara elle yazar.
+
+| Klasör | Piksel | App Store yuvası |
+|---|---|---|
+| `screenshots/ios-6.9/` | 1320 × 2868 | 6.9", zorunlu olan tek iPhone yuvası |
+| `screenshots/ios-6.7/` | 1290 × 2796 | 6.7" |
+| `screenshots/ios-6.5/` | 1242 × 2688 | 6.5" |
+
+Boyut başına altı kare: Today, Habits, ısı haritalı alışkanlık sayfası, iş
+düzenleyici, onboarding, Ayarlar. Veri gerçek veritabanı API'siyle
+tohumlanır, üstüne çizilmez.
+
 ## Yayın
 
 | | |
 |---|---|
 | Bundle ID | `com.batuhanhaymana.dayspan` |
 | Görünen ad | Dayspan |
+| Cihazlar | Yalnızca iPhone (iPad derlemesi yok), Apple Watch eşlik uygulaması |
 | En düşük iOS | 16.0 (widget 17.0, alarm 26.0), watchOS 10.0 |
 | Destek URL'si | https://voxyfy.github.io/dayspan/support.html |
 | Gizlilik URL'si | https://voxyfy.github.io/dayspan/privacy.html |

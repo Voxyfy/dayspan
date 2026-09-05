@@ -32,7 +32,7 @@ widget.build_configurations.each do |c|
   c.build_settings['INFOPLIST_FILE'] = 'DayspanWidget/Info.plist'
   c.build_settings['CODE_SIGN_ENTITLEMENTS'] = 'DayspanWidget/DayspanWidget.entitlements'
   c.build_settings['SWIFT_VERSION'] = '5.0'
-  c.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
+  c.build_settings['TARGETED_DEVICE_FAMILY'] = '1'
   c.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '17.0' # containerBackground iOS 17 ister; uygulama 16'da kalır
   c.build_settings['GENERATE_INFOPLIST_FILE'] = 'NO'
   c.build_settings['MARKETING_VERSION'] = '$(FLUTTER_BUILD_NAME)'

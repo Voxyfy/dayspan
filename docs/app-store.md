@@ -94,14 +94,27 @@ which does not count as collection under Apple's definition.
 Dayspan has no account and no server. To see calendar events, grant calendar access when prompted from Settings → Connect calendar (or allow it during onboarding). The "Alarm" reminder option appears only on iOS 26+, where it uses AlarmKit. The Home Screen widget is under the "Dayspan" name in the widget gallery.
 ```
 
+## Build pitfalls
+
+- With a Watch companion, `flutter build`/`run` need `-d <device>`.
+- The Watch target must declare `SUPPORTED_PLATFORMS = watchos watchsimulator`.
+  Without it the **archive** (not the simulator build) compiles the Watch
+  asset catalog with the iOS SDK and fails with "app icon set named AppIcon
+  did not have any applicable content". `ios/add_watch_target.rb` sets it.
+- Flutter's archive step caches that failure; after fixing, clear
+  `~/Library/Developer/Xcode/DerivedData/Runner-*` before rebuilding.
+
 ## Checklist
 
 - [x] App record created 5 Sept 2026 as "Dayspan: Today, Sorted", SKU `dayspan`, bundle `com.batuhanhaymana.dayspan`, team `4U5QVH3U6A`
 - [x] Identifiers registered: app, `.widget`, `.watchkitapp`; App Group `group.com.batuhanhaymana.dayspan` bound to app and widget
-- [ ] Enable GitHub Pages and open the three URLs above in a browser
-- [ ] Screenshots: 6.9" (1320 × 2868) required; 6.7" and 6.5" optional
-- [ ] `flutter test && flutter analyze` clean
-- [ ] Bump `version:` in `pubspec.yaml`; build number must increase on every upload
-- [ ] `flutter build ipa --release`, upload from the archive
-- [ ] Fill App Privacy: no data collected
-- [ ] Age rating: 4+
+- [x] GitHub Pages live; all three URLs return 200 (5 Sept 2026)
+- [x] Screenshots rendered: `screenshots/ios-6.9/` (required), `ios-6.7/`, `ios-6.5/`; 6 frames each, alpha flattened
+- [x] `flutter test && flutter analyze` clean (48 tests)
+- [x] `version: 1.0.0+1` in `pubspec.yaml`; build number must increase on every upload
+- [x] `flutter build ipa --release` → `build/ios/ipa/dayspan.ipa` (5 Sept 2026)
+- [ ] Upload the IPA with Transporter (or Xcode Organizer), wait for processing, pick the build on the version page
+- [x] App Privacy published: no data collected; privacy URL set
+- [x] Metadata filled: promo text, description, keywords, copyright, review contact + notes, categories Productivity / Lifestyle, price Free in 175 regions, Mac and Vision Pro availability off
+- [x] Age rating questionnaire: 4+
+- [x] `ITSAppUsesNonExemptEncryption = false` in both Info.plists, so no export-compliance prompt per build

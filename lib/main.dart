@@ -36,9 +36,12 @@ Future<void> main() async {
 }
 
 class DayspanApp extends ConsumerStatefulWidget {
-  const DayspanApp({required this.onboarded, super.key});
+  const DayspanApp({required this.onboarded, this.theme, super.key});
 
   final bool onboarded;
+
+  /// Yalnızca çekim aracı verir; üründe [AppTheme.dark] kullanılır.
+  final ThemeData? theme;
 
   @override
   ConsumerState<DayspanApp> createState() => _DayspanAppState();
@@ -62,7 +65,7 @@ class _DayspanAppState extends ConsumerState<DayspanApp> {
     return MaterialApp.router(
       onGenerateTitle: (context) => context.l10n.appName,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark(),
+      theme: widget.theme ?? AppTheme.dark(),
       locale: locale,
       supportedLocales: AppLocales.all,
       localizationsDelegates: L10n.localizationsDelegates,

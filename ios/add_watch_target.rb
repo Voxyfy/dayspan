@@ -32,6 +32,9 @@ generated = project.files.find { |f| f.path.to_s.end_with?('Generated.xcconfig')
 watch.build_configurations.each do |c|
   c.base_configuration_reference = generated
   c.build_settings['SDKROOT'] = 'watchos'
+  # Belirtilmezse arşivde saat hedefi iOS SDK'sıyla kuruluyor ve ikon
+  # kataloğu "applicable content yok" diye düşüyor.
+  c.build_settings['SUPPORTED_PLATFORMS'] = 'watchos watchsimulator'
   c.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = '10.0'
   c.build_settings['TARGETED_DEVICE_FAMILY'] = '4'
   c.build_settings['PRODUCT_NAME'] = '$(TARGET_NAME)'
