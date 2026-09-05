@@ -104,6 +104,18 @@ Dayspan has no account and no server. To see calendar events, grant calendar acc
 - Flutter's archive step caches that failure; after fixing, clear
   `~/Library/Developer/Xcode/DerivedData/Runner-*` before rebuilding.
 
+## Watch screenshot
+
+App Store Connect refuses "Add for Review" without an Apple Watch screenshot
+when the binary embeds a Watch app. The frame comes from the paired Watch
+simulator (`xcrun simctl io <watch> screenshot`), 416 × 496 for Series 10/11
+46mm. The Watch app renders whatever the phone last published; to seed it
+without the phone, write the board JSON into the Watch app's defaults:
+`xcrun simctl spawn <watch> defaults write com.batuhanhaymana.dayspan.watchkitapp board -string '<json>'`
+(the `-string` flag matters, otherwise `defaults` tries to parse it as a plist).
+`simctl terminate` may leave the phone app alive after a simulator reboot;
+`kill -9 <pid>` from the host works.
+
 ## Checklist
 
 - [x] App record created 5 Sept 2026 as "Dayspan: Today, Sorted", SKU `dayspan`, bundle `com.batuhanhaymana.dayspan`, team `4U5QVH3U6A`
@@ -113,7 +125,9 @@ Dayspan has no account and no server. To see calendar events, grant calendar acc
 - [x] `flutter test && flutter analyze` clean (48 tests)
 - [x] `version: 1.0.0+1` in `pubspec.yaml`; build number must increase on every upload
 - [x] `flutter build ipa --release` → `build/ios/ipa/dayspan.ipa` (5 Sept 2026)
-- [ ] Upload the IPA with Transporter (or Xcode Organizer), wait for processing, pick the build on the version page
+- [x] 1.0.0 (1) uploaded via Xcode Organizer, attached to the version (5 Sept 2026)
+- [x] Apple Watch screenshot required because the binary carries a Watch app: `screenshots/watch-46mm/01-today.png` (416 × 496, Series 11 46mm simulator)
+- [x] Submitted for review 5 Sept 2026, auto-release on approval
 - [x] App Privacy published: no data collected; privacy URL set
 - [x] Metadata filled: promo text, description, keywords, copyright, review contact + notes, categories Productivity / Lifestyle, price Free in 175 regions, Mac and Vision Pro availability off
 - [x] Age rating questionnaire: 4+
