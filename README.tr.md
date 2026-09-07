@@ -314,5 +314,14 @@ Issue ve pull request'lere açığız.
 
 ## Lisans
 
-[MIT](LICENSE) © 2026 Batuhan Haymana. Lisans kaynak kodu kapsar; App Store
-sürümü Apple'ın standart son kullanıcı sözleşmesiyle dağıtılır.
+Kaynak kod [MIT](LICENSE) © 2026 Batuhan Haymana. Oku, değiştir, kendi
+projelerinde kullan.
+
+Lisans markayı kapsamaz. "Dayspan" adı, slogan, ikon ve mağaza sayfaları
+yazara aittir. Kendi derlemeni yayınlarsan farklı bir ad ve ikon ver, Dayspan'in
+kopyası olarak yayınlama.
+
+App Store ya da Google Play'den indirdiğin uygulama MIT lisansıyla değil, o
+mağazanın standart son kullanıcı sözleşmesiyle dağıtılır. Mağaza sürümündeki
+ücretli özellikler bu sözleşme kapsamında sunulur. Ayrıntı için lisans
+dosyasının sonundaki [marka ve dağıtım notuna](LICENSE) bak.

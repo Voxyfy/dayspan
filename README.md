@@ -323,5 +323,14 @@ Illustrations are recoloured to the monochrome palette with
 
 ## License
 
-[MIT](LICENSE) © 2026 Batuhan Haymana. The licence covers the source code;
-the App Store build is distributed under Apple's standard EULA.
+The source code is [MIT](LICENSE) © 2026 Batuhan Haymana. Read it, change it,
+use it in your own projects.
+
+The licence does not cover the brand. The name "Dayspan", the tagline, the
+icon and the store listings belong to the author. If you ship your own build,
+give it a different name and icon and do not publish it as a copy of Dayspan.
+
+The app you download from the App Store or Google Play is distributed under
+that store's standard end-user licence agreement, not the MIT licence. Paid
+features in the store build are offered under that agreement. See the
+[trademark and distribution notice](LICENSE) at the end of the licence file.
